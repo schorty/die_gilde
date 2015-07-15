@@ -2,14 +2,11 @@ require 'rmagick'
 require 'pry'
 
 module Gui
-  class Button
-    def initialize(name, width, height, x, y, window, action: ->{}, font_color: nil, bg_color: 0xdfdfdf, border: nil)
+  class Button < GuiElement
+    def initialize(name, x, y, width, height, window, action: ->{}, font_color: nil, bg_color: 0xdfdfdf, border: nil)
+      super(x, y, width, height, window)
+
       @name = name
-      @width = width
-      @height = height
-      @x = x
-      @y = y
-      @window = window
       @font_color = font_color
       @bg_color = bg_color
       @bg_color_initial = bg_color
@@ -17,7 +14,7 @@ module Gui
       @action = action
 
       @fill = Magick::Image.new(@width, @height) {
-        self.background_color = Button::to_hex_color(bg_color)
+        self.background_color = Utils::ColorHelper::to_hex_color(bg_color)
       }
       @image_text = Gosu::Image.from_text(@window, @name, Gosu.default_font_name, 20)
 
@@ -26,7 +23,7 @@ module Gui
 
     def update
       if @change
-        color = Button::to_hex_color(@bg_color)
+        color = Utils::ColorHelper::to_hex_color(@bg_color)
         @fill = Magick::Image.new(@width, @height) {
           self.background_color = color
         }
@@ -63,10 +60,6 @@ module Gui
 
       update
       @action.call
-    end
-
-    def Button::to_hex_color(value)
-      '#' + value.to_i.to_s(16).rjust(6, '0')
     end
   end
 end

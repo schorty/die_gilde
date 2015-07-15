@@ -1,15 +1,17 @@
-require_relative 'gui/button.rb'
-require_relative 'models/building.rb'
-require_relative 'models/production.rb'
+require 'require_all'
+require 'rmagick'
+require_rel 'gui'
+require_rel 'models'
+require_rel 'utils'
 
 class Game
-  def initialize
+  def initialize(width, height)
     @buildings = []
-    @buildings << Building.new
-    @buttons = []
-    @buttons << Gui::Button.new("Neue Produktion", 150, 30, 100, 100, self, action: ->{
-      #@buildings.first.add_production(Production.new(@buildings.first, "Rapier", 2, Time.now))
-    })
+    # @buildings << Models::Blacksmith.new
+    @width = width
+    @height = height
+    rapier = Models::Products::Rapier.new
+    @image = Gosu::Image.new(rapier.image.first, tileable: false)
   end
 
   def button_down(id, options = {})
@@ -39,6 +41,7 @@ class Game
   end
 
   def draw
-    @buttons.each { |b| b.draw }
+    @image.draw(10,10,0)
+    # @buttons.each { |b| b.draw }
   end
 end

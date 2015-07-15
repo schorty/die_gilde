@@ -1,14 +1,17 @@
 require 'gosu'
-require 'rmagick'
-require_relative 'lib/Game/game'
-# Dir[File.dirname(__FILE__) + '/lib/game/*.rb'].each {|file| require file }
+
+require 'require_all'
+require_all 'lib/'
 
 class Gilde < Gosu::Window
 
   def initialize(width = 800, height = 600, fullscreen = false, update_interval = 20)
     super
     self.caption = "Die Gilde"
-    @game = Game.new
+    @game = Game.new(width, height)
+    @background = Gosu::Image.new(Magick::Image.new(width, height) {
+      self.background_color = '#bbbbbb'
+    }, tileable: true)
   end
 
   def button_down(id)
@@ -38,6 +41,7 @@ class Gilde < Gosu::Window
   end
 
   def draw
+    @background.draw(0,0,0)
     @game.draw
   end
 
