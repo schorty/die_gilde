@@ -1,8 +1,8 @@
 require 'require_all'
-require_rel 'products'
+# require_rel 'products'
 
 module Models
-  class ProductionBuilding < Building
+  class ProductionBuilding #< Building
     POSSIBLE_PRODUCTS = [].freeze
 
     def initialize(employee_slots = 2, current_stock_slots = 3, stock_size = 2, tier = 1)
@@ -19,7 +19,7 @@ module Models
     end
 
     def add_production(production)
-      return false if @employee_slots <= @productions.size || !production.kind_of?(Models::Production)
+      # return false if @employee_slots <= @productions.size || !production.kind_of?(Models::Production)
       return false unless POSSIBLE_PRODUCTS.include?(production.product)
       puts 'Debug: Production added'
       @productions << production
